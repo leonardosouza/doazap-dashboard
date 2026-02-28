@@ -87,8 +87,8 @@ def fig_identification_gauge() -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=rate,
-        delta={"reference": 70, "suffix": "%", "font": {"size": 14}},
-        number={"suffix": "%", "font": {"size": 26}},
+        delta={"reference": 70, "suffix": "%", "font": {"size": 12}},
+        number={"suffix": "%", "font": {"size": 22}},
         gauge={
             "axis": {"range": [0, 100]},
             "bar": {"color": "#20c997"},
@@ -105,7 +105,7 @@ def fig_identification_gauge() -> go.Figure:
         },
         title={"text": f"Taxa de Identificação<br><sub>{data['com_nome']} de {data['total']} conversas</sub>"},
     ))
-    fig.update_layout(**_LAYOUT, height=300)
+    fig.update_layout(**_LAYOUT, height=320)
     return fig
 
 

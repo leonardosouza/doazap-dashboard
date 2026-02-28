@@ -4,15 +4,12 @@ DoaZap Dashboard — aplicação Plotly Dash.
 Entry point: Dash app com BasicAuth, 5 tabs e auto-refresh a cada 5 minutos.
 """
 
+import config
 import dash_auth
 import dash_bootstrap_components as dbc
-from dash import Dash, Input, Output, dcc, html
-from dash.dash_table import DataTable
-
-import config
 from components.charts.conversations import (
-    fig_conversations_per_day,
     fig_conversation_size,
+    fig_conversations_per_day,
     fig_identification_gauge,
     fig_response_time,
     table_recent_conversations,
@@ -34,6 +31,8 @@ from components.charts.ongs import (
 )
 from components.charts.overview import fig_activity_heatmap, fig_volume_24h
 from components.kpis import kpi_card
+from dash import Dash, Input, Output, dcc, html
+from dash.dash_table import DataTable
 from data.queries import (
     kpi_conversations_today,
     kpi_messages_today,
@@ -45,7 +44,7 @@ from data.queries import (
 
 app = Dash(
     __name__,
-    external_stylesheets=[dbc.themes.CYBORG, dbc.icons.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.SLATE, dbc.icons.BOOTSTRAP],
     title="DoaZap Dashboard",
     suppress_callback_exceptions=True,
 )
@@ -57,9 +56,15 @@ dash_auth.BasicAuth(app, config.AUTH_USERS)
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 _TABLE_STYLE = {
-    "style_header": {"backgroundColor": "#212529", "color": "#dee2e6", "fontWeight": "bold"},
+    "style_header": {
+        "backgroundColor": "#212529",
+        "color": "#dee2e6",
+        "fontWeight": "bold",
+    },
     "style_data": {"backgroundColor": "#1a1d21", "color": "#adb5bd"},
-    "style_data_conditional": [{"if": {"row_index": "odd"}, "backgroundColor": "#212529"}],
+    "style_data_conditional": [
+        {"if": {"row_index": "odd"}, "backgroundColor": "#212529"}
+    ],
     "style_table": {"overflowX": "auto"},
     "page_size": 10,
 }
@@ -84,90 +89,147 @@ def _section(title: str, *children) -> dbc.Card:
 
 # ── Layout ────────────────────────────────────────────────────────────────────
 
+
 def _kpi_row() -> dbc.Row:
     return dbc.Row(id="kpi-row", className="mb-4 g-3")
 
 
 def _period_filter(filter_id: str) -> dbc.Row:
-    return dbc.Row(dbc.Col(dbc.RadioItems(
-        id=filter_id,
-        options=_PERIOD_OPTIONS,
-        value=30,
-        inline=True,
-        className="mb-3",
-    )))
+    return dbc.Row(
+        dbc.Col(
+            dbc.RadioItems(
+                id=filter_id,
+                options=_PERIOD_OPTIONS,
+                value=30,
+                inline=True,
+                className="mb-3",
+            )
+        )
+    )
 
 
 # Tab 1 — Visão Geral
-tab1 = dbc.Tab(label="Visão Geral", tab_id="tab-overview", children=[
-    dbc.Row([
-        dbc.Col(_graph("fig-volume-24h"), md=8),
-        dbc.Col(_graph("fig-heatmap"), md=4),
-    ]),
-])
+tab1 = dbc.Tab(
+    label="Visão Geral",
+    tab_id="tab-overview",
+    children=[
+        dbc.Row(
+            [
+                dbc.Col(_graph("fig-volume-24h"), md=8),
+                dbc.Col(_graph("fig-heatmap"), md=4),
+            ]
+        ),
+    ],
+)
 
 # Tab 2 — Conversas & Engajamento
-tab2 = dbc.Tab(label="Conversas", tab_id="tab-conversations", children=[
-    dbc.Row([
-        dbc.Col(_graph("fig-conv-day"), md=8),
-        dbc.Col(_graph("fig-conv-gauge"), md=4),
-    ], className="mb-4"),
-    dbc.Row([
-        dbc.Col(_graph("fig-conv-size"), md=6),
-        dbc.Col(_graph("fig-response-time"), md=6),
-    ], className="mb-4"),
-    _section("Conversas Recentes", html.Div(id="table-recent-conv")),
-])
+tab2 = dbc.Tab(
+    label="Conversas",
+    tab_id="tab-conversations",
+    children=[
+        dbc.Row(
+            [
+                dbc.Col(_graph("fig-conv-day"), md=8),
+                dbc.Col(_graph("fig-conv-gauge"), md=4),
+            ],
+            className="mb-4",
+        ),
+        dbc.Row(
+            [
+                dbc.Col(_graph("fig-conv-size"), md=6),
+                dbc.Col(_graph("fig-response-time"), md=6),
+            ],
+            className="mb-4",
+        ),
+        _section("Conversas Recentes", html.Div(id="table-recent-conv")),
+    ],
+)
 
 # Tab 3 — Intents & Sentimentos
-tab3 = dbc.Tab(label="Intents", tab_id="tab-intents", children=[
-    _period_filter("filter-intents"),
-    dbc.Row([
-        dbc.Col(_graph("fig-intent-donut"), md=5),
-        dbc.Col(_graph("fig-intent-evo"), md=7),
-    ], className="mb-4"),
-    dbc.Row(dbc.Col(_graph("fig-sentiment"), md=12)),
-])
+tab3 = dbc.Tab(
+    label="Intents",
+    tab_id="tab-intents",
+    children=[
+        _period_filter("filter-intents"),
+        dbc.Row(
+            [
+                dbc.Col(_graph("fig-intent-donut"), md=5),
+                dbc.Col(_graph("fig-intent-evo"), md=7),
+            ],
+            className="mb-4",
+        ),
+        dbc.Row(dbc.Col(_graph("fig-sentiment"), md=12)),
+    ],
+)
 
 # Tab 4 — ONGs Parceiras
-tab4 = dbc.Tab(label="ONGs", tab_id="tab-ongs", children=[
-    dbc.Row([
-        dbc.Col(_graph("fig-treemap"), md=8),
-        dbc.Col(_graph("fig-ongs-state"), md=4),
-    ], className="mb-4"),
-    _section("Lista de ONGs", html.Div(id="table-ongs")),
-])
+tab4 = dbc.Tab(
+    label="ONGs",
+    tab_id="tab-ongs",
+    children=[
+        dbc.Row(
+            [
+                dbc.Col(_graph("fig-treemap"), md=8),
+                dbc.Col(_graph("fig-ongs-state"), md=4),
+            ],
+            className="mb-4",
+        ),
+        _section("Lista de ONGs", html.Div(id="table-ongs")),
+    ],
+)
 
 # Tab 5 — Guard-Rails & Segurança
-tab5 = dbc.Tab(label="Guard-Rails", tab_id="tab-guardrails", children=[
-    _period_filter("filter-guardrails"),
-    dbc.Row([
-        dbc.Col(_graph("fig-oos-rate"), md=7),
-        dbc.Col(_graph("fig-guardrail-events"), md=5),
-    ], className="mb-4"),
-    _section("Atividade Suspeita", html.Div(id="table-suspicious")),
-])
+tab5 = dbc.Tab(
+    label="Guard-Rails",
+    tab_id="tab-guardrails",
+    children=[
+        _period_filter("filter-guardrails"),
+        dbc.Row(
+            [
+                dbc.Col(_graph("fig-oos-rate"), md=7),
+                dbc.Col(_graph("fig-guardrail-events"), md=5),
+            ],
+            className="mb-4",
+        ),
+        _section("Atividade Suspeita", html.Div(id="table-suspicious")),
+    ],
+)
 
-app.layout = dbc.Container([
-    # Header
-    dbc.Row(dbc.Col(html.Div([
-        html.H3("DoaZap Dashboard", className="d-inline fw-bold text-success"),
-        html.Span(" — Analytics em tempo real", className="text-muted ms-2"),
-    ]), className="py-3 border-bottom mb-4")),
-
-    # KPI cards
-    _kpi_row(),
-
-    # Tabs
-    dbc.Tabs([tab1, tab2, tab3, tab4, tab5], id="main-tabs", active_tab="tab-overview"),
-
-    # Auto-refresh a cada 5 minutos
-    dcc.Interval(id="interval", interval=config.CACHE_TTL * 1000, n_intervals=0),
-
-], fluid=True, className="px-4")
+app.layout = dbc.Container(
+    [
+        # Header
+        dbc.Row(
+            dbc.Col(
+                html.Div(
+                    [
+                        html.H3(
+                            "DoaZap Dashboard",
+                            className="d-inline fw-bold text-success",
+                        ),
+                        html.Span(
+                            " — Analytics em tempo real", className="text-muted ms-2"
+                        ),
+                    ]
+                ),
+                className="py-3 border-bottom mb-4",
+            )
+        ),
+        # KPI cards
+        _kpi_row(),
+        # Tabs
+        dbc.Tabs(
+            [tab1, tab2, tab3, tab4, tab5], id="main-tabs", active_tab="tab-overview"
+        ),
+        # Auto-refresh a cada 5 minutos
+        dcc.Interval(id="interval", interval=config.CACHE_TTL * 1000, n_intervals=0),
+    ],
+    fluid=True,
+    className="px-4",
+)
 
 
 # ── Callbacks ─────────────────────────────────────────────────────────────────
+
 
 @app.callback(
     Output("kpi-row", "children"),

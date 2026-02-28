@@ -5,6 +5,13 @@ Todas as mudanças relevantes deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adota o [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.5] - 2026-02-28
+
+### Changed
+- **Tema visual**: CYBORG → **SLATE** (dark cinza-azulado; mesmo suporte a cores hardcoded dos gráficos)
+- **Gauge "Taxa de Identificação"**: fontes reduzidas para garantir não-sobreposição em qualquer tema
+  (`number.font.size` 26 → 22, `delta.font.size` 14 → 12, `height` 300 → 320 px)
+
 ## [1.0.4] - 2026-02-28
 
 ### Removed
