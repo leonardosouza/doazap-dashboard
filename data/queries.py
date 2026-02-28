@@ -303,10 +303,11 @@ def oos_rate_daily(days: int = 30) -> pd.DataFrame:
     """, days=days)
 
 
-def suspicious_conversations(threshold: float = 0.8) -> pd.DataFrame:
+def suspicious_conversations(threshold: float = 0.55) -> pd.DataFrame:
     """
     Conversas onde a proporção de mensagens inbound é alta (≥ threshold)
-    sem respostas outbound correspondentes — proxy para bots ou rate limiting.
+    ou onde há mensagens inbound sem nenhuma resposta outbound —
+    proxy para bots, rate limiting ou circuit breaker acionado.
     """
     df = _q("""
         SELECT
@@ -317,13 +318,15 @@ def suspicious_conversations(threshold: float = 0.8) -> pd.DataFrame:
             COUNT(m.id) FILTER (WHERE m.direction = 'outbound') AS outbound
         FROM conversations c
         JOIN messages m ON m.conversation_id = c.id
-        GROUP BY c.id
+        GROUP BY c.id, c.phone_number, c.started_at
         HAVING COUNT(m.id) >= 3
-           AND COUNT(m.id) FILTER (WHERE m.direction = 'outbound') = 0
-            OR (
-                COUNT(m.id) FILTER (WHERE m.direction = 'inbound')::float
-                / NULLIF(COUNT(m.id), 0) >= :threshold
+           AND (
+               COUNT(m.id) FILTER (WHERE m.direction = 'outbound') = 0
+               OR (
+                   COUNT(m.id) FILTER (WHERE m.direction = 'inbound')::float
+                   / NULLIF(COUNT(m.id), 0) >= :threshold
                )
+           )
         ORDER BY c.started_at DESC
         LIMIT 50
     """, threshold=threshold)

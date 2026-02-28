@@ -83,7 +83,7 @@ def fig_guardrail_events() -> go.Figure:
 
 def table_suspicious_conversations() -> pd.DataFrame:
     """DataFrame de conversas suspeitas para DataTable."""
-    df = suspicious_conversations(threshold=0.8)
+    df = suspicious_conversations(threshold=0.55)
     if df.empty:
         return pd.DataFrame(columns=["Telefone", "Início", "Total", "Inbound", "Outbound"])
     df = df.rename(columns={

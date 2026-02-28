@@ -21,16 +21,36 @@ def fig_ongs_treemap() -> go.Figure:
         fig.update_layout(title="ONGs por Categoria — sem dados", **_LAYOUT)
         return fig
 
-    # Valores uniformes (1 por ONG) para que o tamanho reflita quantidade
+    ids, labels, parents, values = [], [], [], []
+
+    # Nível 1 — categorias (raiz)
+    for cat in df["category"].unique():
+        ids.append(f"cat::{cat}")
+        labels.append(cat)
+        parents.append("")
+        values.append(0)
+
+    # Nível 2 — subcategorias (chave composta para evitar colisões entre categorias)
+    for _, row in df[["category", "subcategory"]].drop_duplicates().iterrows():
+        sub_id = f"sub::{row['category']}::{row['subcategory']}"
+        ids.append(sub_id)
+        labels.append(row["subcategory"])
+        parents.append(f"cat::{row['category']}")
+        values.append(0)
+
+    # Nível 3 — ONGs (folhas)
+    for _, row in df.iterrows():
+        ids.append(f"ong::{row['name']}")
+        labels.append(row["name"])
+        parents.append(f"sub::{row['category']}::{row['subcategory']}")
+        values.append(1)
+
     fig = go.Figure(go.Treemap(
-        labels=df["name"].tolist() + df["subcategory"].unique().tolist() + df["category"].unique().tolist(),
-        parents=(
-            df["subcategory"].tolist()
-            + df["category"].unique().tolist()
-            + [""] * len(df["category"].unique())
-        ),
-        values=[1] * len(df) + [0] * len(df["subcategory"].unique()) + [0] * len(df["category"].unique()),
-        branchvalues="total",
+        ids=ids,
+        labels=labels,
+        parents=parents,
+        values=values,
+        branchvalues="remainder",
         marker=dict(colorscale="Teal"),
         hovertemplate="<b>%{label}</b><br>%{value} ONG(s)<extra></extra>",
         maxdepth=3,

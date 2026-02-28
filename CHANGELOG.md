@@ -5,6 +5,17 @@ Todas as mudanças relevantes deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adota o [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.2] - 2026-02-28
+
+### Fixed
+- **Treemap de ONGs em branco**: reconstrução da hierarquia com IDs compostos (`cat::X`,
+  `sub::cat::X`, `ong::X`) para evitar colisão entre subcategorias de nomes iguais em
+  categorias distintas (ex.: "Geral" em 7 categorias); corrigido `branchvalues="total"` →
+  `branchvalues="remainder"` que causava falha silenciosa quando `value[pai] < Σvalue[filhos]`
+- **Tabela "Atividade Suspeita" vazia**: corrigido bug de precedência no `HAVING` (faltavam
+  parênteses entre `AND` e `OR`); threshold reduzido de 0.80 para 0.55 para capturar
+  conversas com proporção elevada de mensagens inbound (padrão de bot/rate-limit)
+
 ## [1.0.1] - 2026-02-28
 
 ### Fixed
