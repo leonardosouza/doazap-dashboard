@@ -15,7 +15,7 @@ _LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#dee2e6"),
-    margin=dict(l=10, r=10, t=40, b=10),
+    margin=dict(l=10, r=10, t=70, b=10),
 )
 
 
@@ -49,7 +49,7 @@ def fig_conversations_per_day(days: int = 30) -> go.Figure:
         title=f"Conversas por Dia (últimos {days} dias)",
         xaxis_title="Data",
         yaxis_title="Conversas",
-        legend=dict(orientation="h", y=1.1),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
         bargap=0.15,
         **_LAYOUT,
     )
@@ -104,8 +104,9 @@ def fig_identification_gauge() -> go.Figure:
             },
         },
         title={"text": f"Taxa de Identificação<br><sub>{data['com_nome']} de {data['total']} conversas</sub>"},
+        domain={"x": [0, 1], "y": [0.15, 1]},
     ))
-    fig.update_layout(**_LAYOUT, height=280)
+    fig.update_layout(**_LAYOUT, height=300)
     return fig
 
 

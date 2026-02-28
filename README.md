@@ -34,6 +34,25 @@ O DoaZap Dashboard conecta ao mesmo banco de dados PostgreSQL (Supabase) do bot 
 
 ## Como Executar Localmente
 
+### Com Docker (recomendado)
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/leonardosouza/doazap-dashboard.git
+cd doazap-dashboard
+
+# 2. Configure as variáveis de ambiente
+cp .env.example .env
+# Edite .env com DATABASE_URL, DASHBOARD_USER e DASHBOARD_PASSWORD
+
+# 3. Suba o container
+docker compose up -d
+
+# Acesse: http://localhost:8050
+```
+
+### Sem Docker
+
 ```bash
 # 1. Clone o repositório
 git clone https://github.com/leonardosouza/doazap-dashboard.git

@@ -9,7 +9,7 @@ _LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#dee2e6"),
-    margin=dict(l=10, r=10, t=40, b=10),
+    margin=dict(l=10, r=10, t=70, b=10),
 )
 
 
@@ -75,7 +75,7 @@ def fig_guardrail_events() -> go.Figure:
         title="Eventos de Guard-Rail por Dia (últimos 30 dias)",
         xaxis_title="Data",
         yaxis_title="Conversas",
-        legend=dict(orientation="h", y=1.1),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
         **_LAYOUT,
     )
     return fig

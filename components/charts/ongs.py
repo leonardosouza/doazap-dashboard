@@ -9,7 +9,7 @@ _LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#dee2e6"),
-    margin=dict(l=10, r=10, t=40, b=10),
+    margin=dict(l=10, r=10, t=70, b=10),
 )
 
 

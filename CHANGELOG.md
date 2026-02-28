@@ -5,6 +5,15 @@ Todas as mudanças relevantes deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adota o [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] - 2026-02-28
+
+### Fixed
+- **Sobreposição legenda × título** em todos os gráficos com múltiplas séries: margem superior
+  aumentada de 40 px para 70 px (`t=70`) e legendas horizontais reposicionadas com
+  `yanchor="bottom", y=1.02` para renderizarem abaixo do título sem colisão
+- **Gauge de Taxa de Identificação** desalinhado: adicionado `domain={"x": [0,1], "y": [0.15,1]}`
+  no `go.Indicator` para reservar espaço para o valor numérico e delta abaixo do arco
+
 ## [1.0.0] - 2026-02-28
 
 ### Added
