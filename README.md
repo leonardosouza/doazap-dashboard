@@ -117,9 +117,13 @@ O dashboard está hospedado no [Render](https://render.com/) como Web Service fr
 
 | Configuração | Valor |
 |-------------|-------|
-| Build command | `pip install -r requirements.txt` |
-| Start command | `gunicorn app:server -b 0.0.0.0:$PORT --workers 2 --timeout 120` |
-| Env vars | `DATABASE_URL`, `DASHBOARD_USER`, `DASHBOARD_PASSWORD` |
+| URL | <https://doazap-dashboard.onrender.com> |
+| Runtime | Docker (Dockerfile na raiz) |
+| Region | Oregon (US West) |
+| Env vars | `DATABASE_URL`, `DASHBOARD_USER`, `DASHBOARD_PASSWORD`, `CACHE_TTL` |
+
+> **Nota:** o free tier do Render hiberna após 15 min de inatividade. O primeiro acesso após inatividade
+> pode demorar ~30 segundos para o container inicializar.
 
 ## Versionamento
 
