@@ -1,0 +1,11 @@
+services:
+  dashboard:
+    build: .
+    ports:
+      - "8050:8050"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      DASHBOARD_USER: ${DASHBOARD_USER:-admin}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD}
+      CACHE_TTL: ${CACHE_TTL:-300}
+    restart: unless-stopped
