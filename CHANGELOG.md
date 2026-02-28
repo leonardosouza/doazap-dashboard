@@ -5,6 +5,13 @@ Todas as mudanças relevantes deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adota o [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.3] - 2026-02-28
+
+### Fixed
+- **Gauge "Taxa de Identificação" com sobreposição**: removido `domain` ineficaz; reduzidos
+  `number.font.size` de 36 → 26 e `delta.font.size` → 14 para caber no espaço interno do arco
+  sem sobreposição ao semicírculo
+
 ## [1.0.2] - 2026-02-28
 
 ### Fixed
