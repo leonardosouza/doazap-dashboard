@@ -5,6 +5,13 @@ Todas as mudanças relevantes deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adota o [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.4] - 2026-02-28
+
+### Removed
+- **Gráfico "Cobertura de Chave PIX"**: donut removido da Tab ONGs (dados disponíveis
+  na DataTable interativa via coluna "PIX"); espaço lateral ocupado apenas pelas barras
+  de ONGs por estado
+
 ## [1.0.3] - 2026-02-28
 
 ### Fixed

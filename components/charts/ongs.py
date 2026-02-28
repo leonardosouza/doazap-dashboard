@@ -3,7 +3,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-from data.queries import ongs_by_category, ongs_by_state, ongs_list, ongs_pix_coverage
+from data.queries import ongs_by_category, ongs_by_state, ongs_list
 
 _LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
@@ -82,24 +82,6 @@ def fig_ongs_by_state() -> go.Figure:
     )
     return fig
 
-
-def fig_ongs_pix() -> go.Figure:
-    """Donut: ONGs com vs sem chave PIX."""
-    df = ongs_pix_coverage()
-    if df.empty:
-        fig = go.Figure()
-        fig.update_layout(title="Cobertura PIX — sem dados", **_LAYOUT)
-        return fig
-
-    fig = go.Figure(go.Pie(
-        labels=df["tipo"],
-        values=df["total"],
-        hole=0.5,
-        marker=dict(colors=["#20c997", "#495057"]),
-        hovertemplate="<b>%{label}</b><br>%{value} ONGs (%{percent})<extra></extra>",
-    ))
-    fig.update_layout(title="Cobertura de Chave PIX", **_LAYOUT)
-    return fig
 
 
 def table_ongs_list() -> pd.DataFrame:

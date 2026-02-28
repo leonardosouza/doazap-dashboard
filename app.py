@@ -29,7 +29,6 @@ from components.charts.intents import (
 )
 from components.charts.ongs import (
     fig_ongs_by_state,
-    fig_ongs_pix,
     fig_ongs_treemap,
     table_ongs_list,
 )
@@ -134,10 +133,7 @@ tab3 = dbc.Tab(label="Intents", tab_id="tab-intents", children=[
 tab4 = dbc.Tab(label="ONGs", tab_id="tab-ongs", children=[
     dbc.Row([
         dbc.Col(_graph("fig-treemap"), md=8),
-        dbc.Col([
-            _graph("fig-ongs-state"),
-            _graph("fig-ongs-pix"),
-        ], md=4),
+        dbc.Col(_graph("fig-ongs-state"), md=4),
     ], className="mb-4"),
     _section("Lista de ONGs", html.Div(id="table-ongs")),
 ])
@@ -244,7 +240,6 @@ def update_intents(days, _):
 @app.callback(
     Output("fig-treemap", "figure"),
     Output("fig-ongs-state", "figure"),
-    Output("fig-ongs-pix", "figure"),
     Output("table-ongs", "children"),
     Input("interval", "n_intervals"),
 )
@@ -258,7 +253,7 @@ def update_ongs(_):
         sort_action="native",
         **_TABLE_STYLE,
     )
-    return fig_ongs_treemap(), fig_ongs_by_state(), fig_ongs_pix(), table
+    return fig_ongs_treemap(), fig_ongs_by_state(), table
 
 
 @app.callback(
